@@ -1,7 +1,6 @@
 package server
 
 import (
-	"os"
 	"log"
 	"strconv"
 	"net/http"
@@ -12,9 +11,6 @@ import (
 const Port = 8080
 
 func getHomePage(w http.ResponseWriter, req *http.Request) {
-	// Go up one level to access data
-	os.Chdir("..")
-
 	temp := pages.GetTemplate("home.html")
 	if temp == nil {
 		w.WriteHeader(500)

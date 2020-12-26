@@ -6,7 +6,7 @@ import (
 	"html/template"
 )
 
-var PageDirectory, _ = filepath.Rel(".", "Vocabulary_Tracker/pages")
+const PageDirectory = "pages"
 
 type WelcomePage struct {
 	Title string
