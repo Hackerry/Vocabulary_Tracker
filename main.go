@@ -1,7 +1,7 @@
 package main
 
 import (
-	"server"
+	"github.com/Hackerry/Vocabulary_Tracker/server"
 )
 
 func main() {

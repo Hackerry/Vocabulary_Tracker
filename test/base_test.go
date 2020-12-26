@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"testing"
 
-	"server"
+	"github.com/Hackerry/Vocabulary_Tracker/server"
 )
 
 func TestBase(t *testing.T) {

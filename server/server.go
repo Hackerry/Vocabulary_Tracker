@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"net/http"
 
-	"pages"
+	"github.com/Hackerry/Vocabulary_Tracker/pages"
 )
 
 const Port = 8080
@@ -16,6 +16,12 @@ func getHomePage(w http.ResponseWriter, req *http.Request) {
 	os.Chdir("..")
 
 	temp := pages.GetTemplate("home.html")
+	if temp == nil {
+		w.WriteHeader(500)
+		w.Write([]byte("500 Error"))
+		return
+	}
+
 	data := pages.WelcomePage {
 		"Welcome",
 		"Enter content here",
@@ -25,5 +31,7 @@ func getHomePage(w http.ResponseWriter, req *http.Request) {
 
 func Serve() {
 	http.HandleFunc("/", getHomePage)
+	
+	log.Println("Starting server...")
 	log.Fatalf("%s", http.ListenAndServe("localhost:" + strconv.Itoa(Port), nil))
 }
