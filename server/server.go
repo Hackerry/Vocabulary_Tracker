@@ -6,11 +6,16 @@ import (
 	"net/http"
 
 	"github.com/Hackerry/Vocabulary_Tracker/pages"
+	"github.com/Hackerry/Vocabulary_Tracker/api"
 )
 
 const Port = 8080
 
-func getHomePage(w http.ResponseWriter, req *http.Request) {
+type Server struct {
+	api *api.API
+}
+
+func (s *Server) getHomePage(w http.ResponseWriter, req *http.Request) {
 	temp := pages.GetTemplate("home.html")
 	if temp == nil {
 		w.WriteHeader(500)
@@ -25,9 +30,15 @@ func getHomePage(w http.ResponseWriter, req *http.Request) {
 	temp.Execute(w, data)
 }
 
-func Serve() {
-	http.HandleFunc("/", getHomePage)
+func (s *Server) Serve() {
+	// Register all operations
+	http.HandleFunc("/", s.getHomePage)
 	
+	// Starting server
 	log.Println("Starting server...")
 	log.Fatalf("%s", http.ListenAndServe("localhost:" + strconv.Itoa(Port), nil))
+}
+
+func NewServer(api *api.API) *Server {
+	return &Server{ api };
 }
