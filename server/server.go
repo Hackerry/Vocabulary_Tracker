@@ -3,6 +3,7 @@ package server
 import (
 	"log"
 	"regexp"
+	"strings"
 	"strconv"
 	"net/http"
 
@@ -50,7 +51,8 @@ func (s *Server) searchWord(w http.ResponseWriter, req *http.Request) {
 	}
 
 	// Query words
-	data := s.api.Query(word[0])
+	queryWord := strings.TrimSpace(word[0])
+	data := s.api.Query(queryWord)
 	if data == nil {
 		// TODO send 500
 		w.WriteHeader(500)
@@ -58,8 +60,18 @@ func (s *Server) searchWord(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// Parse response
+	// Parse response, filter out idioms, prefix & suffixs
 	defs := s.api.Parser(data)
+	if defs.DefList != nil {
+		queryWordDefs := make([]api.Definition, 0, 0)
+		for _, def := range defs.DefList {
+			if strings.ToLower(def.Word) == strings.ToLower(queryWord) {
+				queryWordDefs = append(queryWordDefs, def)
+			}
+		}
+
+		defs.DefList = queryWordDefs
+	}
 	
 	temp := pages.GetTemplate("search.html")
 	if temp == nil {
