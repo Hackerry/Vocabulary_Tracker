@@ -25,26 +25,26 @@ func TestParseMW(t *testing.T) {
 	t.Logf("Test parsing Merriam-Webster JSON\n")
 
 	defs := api.ParseMWJson([]byte(verisimilitude))
-	for i, def := range defs {
+	for i, def := range defs.DefList {
 		t.Logf("Retrieved Entry %d: \n\n%v\n\n", i, def)
 	}
 
 	defs = api.ParseMWJson([]byte(some))
-	for i, def := range defs {
+	for i, def := range defs.DefList {
 		t.Logf("Retrieved Entry %d: \n\n%v\n\n", i, def)
 	}
 
 	defs = api.ParseMWJson([]byte(volumious))
-	for i, def := range defs {
-		if !def.SpellError {
-			t.Fatalf("Should indicate spell error")
-		}
+	if !defs.SpellError {
+		t.Fatalf("Should indicate spell error")
+	}
+	for i, def := range defs.DefList {
 		t.Logf("Retrieved Entry %d: \n\n%v\n\n", i, def)
 	}
 }
 
 func helperURLTest(url string, expected bool, t *testing.T) {
-	a := api.NewAPI(url)
+	a := api.NewAPI(url, "Merriam-Webster")
 	if (a != nil && !expected) {
 		t.Fatalf("%s should be invalid\n", url)
 	} else if (a == nil && expected) {

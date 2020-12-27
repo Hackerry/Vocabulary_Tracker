@@ -1,4 +1,21 @@
 <html>
-    <h1>{{.Title}}</h1>
-    <p>{{.Text}}</p>
+    <head>
+        <style>
+            #root {
+                margin: 100px auto;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div id='root'>
+            <h1>Welcome</h1>
+            <div>
+                <form action="/search" method="GET">
+                    <input placeholder="Enter word to search..." type="text" name="word" />
+                    <input type="submit" />
+                </form>
+            </div>
+        </div>
+    </body>
 </html>

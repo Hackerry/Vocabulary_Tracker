@@ -13,8 +13,8 @@ type WelcomePage struct {
 	Text string
 }
 
+// Retrieve template file
 func GetTemplate(fileName string) *template.Template {
-	log.Println("Get template", fileName)
 	f := filepath.Join(PageDirectory, fileName)
 	temp, err := template.ParseFiles(f)
 	if err != nil {

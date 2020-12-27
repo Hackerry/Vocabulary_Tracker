@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <style>
+
+        </style>
+    </head>
+    <body>
+        <div id="root">
+            {{if .SpellError}}
+            <div>
+                <span style="font-weight:bold">Did you mean:</span>
+                <p>
+                    {{range .GuessWords}}
+                    <span>{{.}}</span><br>
+                    {{end}}
+                </p>
+            </div>
+            {{else}}
+                {{range .DefList}}
+                <div>
+                    <h1 style='display:inline-block;line-height:0.1em;'>{{.Word}}</h1>&nbsp;
+
+                    <!-- Pronunciations -->
+                    {{range .Pronun}}
+                    <span>[{{.}}]</span>&nbsp;
+                    {{end}}
+
+                    <!-- Function -->
+                    <span><i>{{.Func}}</i></span>
+
+                    <!-- Stemed Words -->
+                    <p>
+                        <span style='font-weight:bold;'>Stemed Words:</span>
+                        {{range .Stems}}
+                        <span>{{.}}</span>
+                        {{end}}
+                    </p>
+
+                    <!-- Definitions -->
+                    <ol>
+                        {{range .Defs}}
+                        <li>{{.}}</li>
+                        {{end}}
+                    </ol>
+                </div>
+                {{end}}
+            {{end}}
+        </div>
+    </body>
+</html>

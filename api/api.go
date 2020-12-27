@@ -11,11 +11,14 @@ import (
 const WordPlaceHolder = "[word]"
 
 type API struct {
-	Url string
+	Url			string
+	Parser		Parser
 }
 
 func (api *API) Query(word string) []byte {
-	resp, err := http.Get(strings.ReplaceAll(api.Url, WordPlaceHolder, word))
+	query := strings.ReplaceAll(api.Url, WordPlaceHolder, word)
+	log.Println("Query:", query)
+	resp, err := http.Get(query)
 	if err != nil {
 		log.Println("Error calling API", err)
 		return nil
@@ -39,7 +42,7 @@ func (api *API) Query(word string) []byte {
 }
 
 // Return new API with the format: http://www.xxxx.com?word=[word]&key=...
-func NewAPI(urlStr string) *API {
+func NewAPI(urlStr string, apiProvider string) *API {
 	u, err := url.Parse(urlStr)
 	if err != nil {
 		log.Println("Error parsing input URL", err)
@@ -55,7 +58,18 @@ func NewAPI(urlStr string) *API {
 		return nil
 	}
 
+	// Link parser to apiProvider
+	var parser Parser
+	switch apiProvider {
+		case "Merriam-Webster":
+			parser = ParseMWJson
+		default:
+			log.Println("No parser found")
+			return nil
+	}
+
 	return &API {
-		u.String(),
+		Url:	u.String(),
+		Parser:	parser,
 	};
 }

@@ -9,9 +9,6 @@ import (
 
 // This is the final object to be passed
 type Definition struct {
-	GuessWords	[]string	// Guessed words returned by api in case of spelling error
-	SpellError	bool		// Indicate whether there's a spelling error
-
 	Word		string		// Word
 	Pronun		[]string	// Pronunciation
 	Func		string		// Function
@@ -19,10 +16,17 @@ type Definition struct {
 	Defs		[]string	// Definitions and uses
 }
 
+type Definitions struct {
+	DefList 	[]Definition
+	SpellError	bool		// Indicate whether there's a spelling error
+	GuessWords	[]string	// Guessed words returned by api in case of spelling error
+}
+
+type Parser func([]byte) *Definitions
+
 // Parse Merriam-Webster api result
-func ParseMWJson(data []byte) []Definition {
+func ParseMWJson(data []byte) *Definitions {
 	var entries []Entry
-	defs := make([]Definition, 0, 0)
 
 	// Parse json
 	err := json.Unmarshal([]byte(data), &entries)
@@ -35,19 +39,22 @@ func ParseMWJson(data []byte) []Definition {
 			return nil
 		}
 
-		defs = append(defs, Definition {
-			GuessWords: words,
+		return &Definitions{
 			SpellError: true,
-		})
-		return defs
+			GuessWords: words,
+		}
 	}
 
 	// Get all entries and definition
+	defs := make([]Definition, 0, 0)
 	for _, entry := range entries {
 		// Get all pronunciation
 		pronun := make([]string, 0, 0)
 		for _, p := range entry.Hwi.Prs {
-			pronun = append(pronun, p.Mw)
+			// Eliminate empty strings
+			if p.Mw != "" {
+				pronun = append(pronun, p.Mw)
+			}
 		}
 
 		// Get all definitions
@@ -57,8 +64,6 @@ func ParseMWJson(data []byte) []Definition {
 		}
 
 		def := Definition {
-			GuessWords: nil,
-			SpellError: false,
 			Word: sanitizeId(entry.Meta.Id),
 			Pronun: pronun,
 			Func: entry.Fl,
@@ -70,7 +75,10 @@ func ParseMWJson(data []byte) []Definition {
 		defs = append(defs, def)
 	}
 
-	return defs
+	return &Definitions {
+		SpellError: false,
+		DefList: defs,
+	}
 }
 
 // Recursive function to find dt tags
