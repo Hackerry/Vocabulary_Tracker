@@ -9,6 +9,7 @@ import (
 
 	"github.com/Hackerry/Vocabulary_Tracker/pages"
 	"github.com/Hackerry/Vocabulary_Tracker/api"
+	"github.com/Hackerry/Vocabulary_Tracker/entryStore"
 )
 
 const Port = 8080
@@ -54,8 +55,8 @@ func (s *Server) getWordPage(w http.ResponseWriter, req *http.Request) {
 
 	// Query words
 	queryWord := strings.TrimSpace(word[0])
-	data := s.api.Query(queryWord)
-	if data == nil {
+	queryResp := s.api.Query(queryWord)
+	if queryResp == nil {
 		// TODO send 500
 		w.WriteHeader(500)
 		w.Write([]byte("500 Error: fail to query for word"))
@@ -63,7 +64,7 @@ func (s *Server) getWordPage(w http.ResponseWriter, req *http.Request) {
 	}
 
 	// Parse response, filter out idioms, prefix & suffixs
-	defs := s.api.Parser(data)
+	defs := s.api.Parser(queryResp)
 	if defs.DefList != nil {
 		queryWordDefs := make([]api.Definition, 0, 0)
 		for _, def := range defs.DefList {
@@ -74,6 +75,21 @@ func (s *Server) getWordPage(w http.ResponseWriter, req *http.Request) {
 
 		defs.DefList = queryWordDefs
 	}
+
+	// Get user entry
+	entries := entryStore.ReadEntries(queryWord)
+	if entries == nil {
+		entries = make([]entryStore.Entry, 1, 1)
+		entries[0] = entryStore.Entry {
+			Date: 		"",
+			Comment: 	"No Entry Found",
+		}
+	}
+
+	data := pages.WordPage {
+		Definitions:	defs,
+		Entries:		entries,
+	}
 	
 	temp := pages.GetTemplate("search.html")
 	if temp == nil {
@@ -83,12 +99,7 @@ func (s *Server) getWordPage(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	temp.Execute(w, defs)
-}
-
-// Retrieve user stored data
-func (s *Server) retrieveUserData(word string) {
-	
+	temp.Execute(w, data)
 }
 
 func (s *Server) Serve() {

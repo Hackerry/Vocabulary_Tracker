@@ -1,4 +1,3 @@
-
 <html>
     <head>
         <style>
@@ -15,12 +14,18 @@
                 text-align:center;
                 width:100%;
             }
-            #search-bar {
-                margin: 100px auto 0;
+            #content {
                 width: 40%;
+                margin: 0 auto;
+            }
+            #search-bar {
+                margin: 0 auto;
+                padding: 100px 0 20px;
+                background-color: #636363;
             }
             #search-form {
-                width: 100%;
+                margin: 0 auto;
+                width: 40%;
                 height: 100px;
                 line-height: 1.5em;
             }
@@ -49,14 +54,15 @@
             #search-button:hover {
                 cursor: pointer;
             }
-            #list {
+            #word-list {
                 margin: auto;
-                width: 40%;
             }
             .word-div {
                 text-align:left;
                 padding-left:5%;
                 margin: 60px 0;
+                padding-bottom: 30px;
+                border-bottom: 2px dotted white;
             }
             .word-title {
                 display:inline-block;
@@ -66,11 +72,21 @@
                 text-indent: 0;
                 margin: 20px 0;
             }
+            .entry-list {
+                margin: auto;
+            }
+            .entry-div {
+                text-align: left;
+                padding-left: 5%;
+            }
+            .entry-comment {
+                margin: 20px 0;
+                padding-left: 50px;
+            }
         </style>
     </head>
     <body>
         <div id="root">
-            
             <div id='search-bar'>
                 <form id='search-form' action="/search" method="GET">
                     <input placeholder="Enter word to search..." type="text" name="word" id='search-input' />
@@ -78,71 +94,130 @@
                 </form>
             </div>
 
-            
-            <div id="list">
+            <div id='content'>
                 
+                <div id="word-list">
                     
-                    <div class='word-div'>
-                        <h1 class='word-title'>overuse</h1>&nbsp;
+                        
+                        <div class='word-div'>
+                            <h1 class='word-title'>some</h1>&nbsp;
 
-                        
-                        
-                        <span>[ˌō-vər-ˈyüz]</span>&nbsp;
-                        
+                            
+                            
+                            <span>[ˈsəm]</span>&nbsp;
+                            
 
-                        
-                        <span><i>verb</i></span>
+                            
+                            <span><i>adjective</i></span>
 
-                        
-                        <p>
-                            <span style='font-weight:bold;'>Stemed Words:</span>
                             
-                            <span>overuse</span>
-                            
-                            <span>overused</span>
-                            
-                            <span>overuses</span>
-                            
-                            <span>overusing</span>
-                            
-                        </p>
+                            <p>
+                                <span style='font-weight:bold;'>Stemed Words:</span>
+                                
+                                <span>some</span>
+                                
+                            </p>
 
+                            
+                            <ol class='def-list'>
+                                
+                                <li>being an unknown, undetermined, or unspecified unit or thing </li>
+                                
+                                <li>being one, a part, or an unspecified number of something (such as a class or group) named or implied </li>
+                                
+                                <li>being of an unspecified amount or number </li>
+                                
+                                <li>remarkable, striking </li>
+                                
+                                <li>being at least one </li>
+                                
+                            </ol>
+                        </div>
                         
-                        <ol class='def-list'>
+                        <div class='word-div'>
+                            <h1 class='word-title'>some</h1>&nbsp;
+
                             
-                            <li>to use (something) too much to use (something) excessively or too frequently </li>
                             
-                        </ol>
+                            <span>[ˈsəm]</span>&nbsp;
+                            
+
+                            
+                            <span><i>pronoun, singular or plural in construction</i></span>
+
+                            
+                            <p>
+                                <span style='font-weight:bold;'>Stemed Words:</span>
+                                
+                                <span>some</span>
+                                
+                            </p>
+
+                            
+                            <ol class='def-list'>
+                                
+                                <li>one indeterminate quantity, portion, or number as distinguished from the rest</li>
+                                
+                                <li>an indefinite additional amount </li>
+                                
+                            </ol>
+                        </div>
+                        
+                        <div class='word-div'>
+                            <h1 class='word-title'>some</h1>&nbsp;
+
+                            
+                            
+                            <span>[ˈsəm]</span>&nbsp;
+                            
+                            <span>[ˌsəm]</span>&nbsp;
+                            
+
+                            
+                            <span><i>adverb</i></span>
+
+                            
+                            <p>
+                                <span style='font-weight:bold;'>Stemed Words:</span>
+                                
+                                <span>some</span>
+                                
+                            </p>
+
+                            
+                            <ol class='def-list'>
+                                
+                                <li>about </li>
+                                
+                                <li>in some degree somewhat </li>
+                                
+                                <li>to some degree or extent a little </li>
+                                
+                            </ol>
+                        </div>
+                        
+                    
+                </div>
+
+                
+                <div id='entry-list'>
+                    
+                    <div class='entry-div'>
+                        <p class='entry-date'><i>01/20/2019</i></p>
+                        <p class='entry-comment'>saw in NYTimes</p>
                     </div>
                     
-                    <div class='word-div'>
-                        <h1 class='word-title'>overuse</h1>&nbsp;
-
-                        
-                        
-                        <span>[ˌō-vər-ˈyüs]</span>&nbsp;
-                        
-
-                        
-                        <span><i>noun</i></span>
-
-                        
-                        <p>
-                            <span style='font-weight:bold;'>Stemed Words:</span>
-                            
-                            <span>overuse</span>
-                            
-                        </p>
-
-                        
-                        <ol class='def-list'>
-                            
-                            <li>too much use excessive or too frequent use </li>
-                            
-                        </ol>
+                    <div class='entry-div'>
+                        <p class='entry-date'><i>02/01/2020</i></p>
+                        <p class='entry-comment'>i should have remembered it</p>
                     </div>
                     
-                
+                    <div class='entry-div'>
+                        <p class='entry-date'><i>02/20/2020</i></p>
+                        <p class='entry-comment'>again</p>
+                    </div>
+                    
+                </div>
             </div>
         </div>
     </body>

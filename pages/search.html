@@ -3,23 +3,66 @@
         <style>
             * {
                 margin: 0;
+                color: white;
             }
             html, body {
                 width: 100%;
                 font-family: monospace, serif;
+                background-color: #232323;
             }
             #root {
                 text-align:center;
                 width:100%;
             }
-            #list {
-                margin: auto;
+            #content {
                 width: 40%;
+                margin: 0 auto;
+            }
+            #search-bar {
+                margin: 0 auto;
+                padding: 100px 0 20px;
+                background-color: #636363;
+            }
+            #search-form {
+                margin: 0 auto;
+                width: 40%;
+                height: 100px;
+                line-height: 1.5em;
+            }
+            #search-input {
+                width: 70%;
+                font-size: 1.5em;
+                padding: 5px 8px;
+                border: 1px solid white;
+                border-radius: 5px;
+                outline: none;
+                color: #232323;
+                letter-spacing: 1px;
+                font-family: monospace;
+            }
+            #search-button {
+                font-size: 1.5em;
+                padding: 5px;
+                background-color: #232323;
+                color: white;
+                box-shadow: none;
+                border: 2px solid white;
+                border-radius: 5px;
+                box-sizing: border-box;
+                outline: none;
+            }
+            #search-button:hover {
+                cursor: pointer;
+            }
+            #word-list {
+                margin: auto;
             }
             .word-div {
                 text-align:left;
                 padding-left:5%;
                 margin: 60px 0;
+                padding-bottom: 30px;
+                border-bottom: 2px dotted white;
             }
             .word-title {
                 display:inline-block;
@@ -29,59 +72,82 @@
                 text-indent: 0;
                 margin: 20px 0;
             }
+            .entry-list {
+                margin: auto;
+            }
+            .entry-div {
+                text-align: left;
+                padding-left: 5%;
+            }
+            .entry-comment {
+                margin: 20px 0;
+                padding-left: 50px;
+            }
         </style>
     </head>
     <body>
         <div id="root">
             <!-- Search bar -->
-            <div>
-                <form action="/search" method="GET">
-                    <input placeholder="Enter word to search..." type="text" name="word" />
-                    <input type="submit" />
+            <div id='search-bar'>
+                <form id='search-form' action="/search" method="GET">
+                    <input placeholder="Enter word to search..." type="text" name="word" id='search-input' />
+                    <input type="submit" id='search-button' value='Search' />
                 </form>
             </div>
+            
+            <div id='content'>
+                <!-- Search list -->
+                <div id="word-list">
+                    {{if .Definitions.SpellError}}
+                        <div>
+                            <span style="font-weight:bold">Did you mean:</span>
+                            <p>
+                                {{range .GuessWords}}
+                                <span>{{.}}</span><br>
+                                {{end}}
+                            </p>
+                        </div>
+                    {{else}}
+                        {{range .Definitions.DefList}}
+                        <div class='word-div'>
+                            <h1 class='word-title'>{{.Word}}</h1>&nbsp;
 
-            <!-- Search list -->
-            <div id="list">
-                {{if .SpellError}}
-                    <div>
-                        <span style="font-weight:bold">Did you mean:</span>
-                        <p>
-                            {{range .GuessWords}}
-                            <span>{{.}}</span><br>
+                            <!-- Pronunciations -->
+                            {{range .Pronun}}
+                            <span>[{{.}}]</span>&nbsp;
                             {{end}}
-                        </p>
-                    </div>
-                {{else}}
-                    {{range .DefList}}
-                    <div class='word-div'>
-                        <h1 class='word-title'>{{.Word}}</h1>&nbsp;
 
-                        <!-- Pronunciations -->
-                        {{range .Pronun}}
-                        <span>[{{.}}]</span>&nbsp;
+                            <!-- Function -->
+                            <span><i>{{.Func}}</i></span>
+
+                            <!-- Stemed Words -->
+                            <p>
+                                <span style='font-weight:bold;'>Stemed Words:</span>
+                                {{range .Stems}}
+                                <span>{{.}}</span>
+                                {{end}}
+                            </p>
+
+                            <!-- Definitions -->
+                            <ol class='def-list'>
+                                {{range .Defs}}
+                                <li>{{.}}</li>
+                                {{end}}
+                            </ol>
+                        </div>
                         {{end}}
+                    {{end}}
+                </div>
 
-                        <!-- Function -->
-                        <span><i>{{.Func}}</i></span>
-
-                        <!-- Stemed Words -->
-                        <p>
-                            <span style='font-weight:bold;'>Stemed Words:</span>
-                            {{range .Stems}}
-                            <span>{{.}}</span>
-                            {{end}}
-                        </p>
-
-                        <!-- Definitions -->
-                        <ol class='def-list'>
-                            {{range .Defs}}
-                            <li>{{.}}</li>
-                            {{end}}
-                        </ol>
+                <!-- User Entry list -->
+                <div id='entry-list'>
+                    {{range .Entries}}
+                    <div class='entry-div'>
+                        <p class='entry-date'><i>{{.Date}}</i></p>
+                        <p class='entry-comment'>{{.Comment}}</p>
                     </div>
                     {{end}}
-                {{end}}
+                </div>
             </div>
         </div>
     </body>

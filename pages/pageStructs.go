@@ -4,13 +4,21 @@ import (
 	"log"
 	"path/filepath"
 	"html/template"
+
+	"github.com/Hackerry/Vocabulary_Tracker/api"
+	"github.com/Hackerry/Vocabulary_Tracker/entryStore"
 )
 
 const PageDirectory = "pages"
 
 type WelcomePage struct {
-	Title string
-	Text string
+	Title		string
+	Text		string
+}
+
+type WordPage struct {
+	Definitions	*api.Definitions
+	Entries		[]entryStore.Entry
 }
 
 // Retrieve template file
