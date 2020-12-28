@@ -21,6 +21,7 @@ type Server struct {
 	api *api.API
 }
 
+// Get home page
 func (s *Server) getHomePage(w http.ResponseWriter, req *http.Request) {
 	temp := pages.GetTemplate("home.html")
 	if temp == nil {
@@ -37,7 +38,8 @@ func (s *Server) getHomePage(w http.ResponseWriter, req *http.Request) {
 	temp.Execute(w, data)
 }
 
-func (s *Server) searchWord(w http.ResponseWriter, req *http.Request) {
+// Get search word page
+func (s *Server) getWordPage(w http.ResponseWriter, req *http.Request) {
 	// Query for word
 	params := req.URL.Query()
 	word := params["word"]
@@ -84,10 +86,15 @@ func (s *Server) searchWord(w http.ResponseWriter, req *http.Request) {
 	temp.Execute(w, defs)
 }
 
+// Retrieve user stored data
+func (s *Server) retrieveUserData(word string) {
+	
+}
+
 func (s *Server) Serve() {
 	// Register all operations
 	http.HandleFunc("/", s.getHomePage)
-	http.HandleFunc("/search", s.searchWord)
+	http.HandleFunc("/search", s.getWordPage)
 	
 	// Starting server
 	log.Println("Starting server...")

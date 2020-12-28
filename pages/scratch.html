@@ -2,13 +2,52 @@
 <html>
     <head>
         <style>
+            * {
+                margin: 0;
+                color: white;
+            }
             html, body {
                 width: 100%;
                 font-family: monospace, serif;
+                background-color: #232323;
             }
             #root {
                 text-align:center;
                 width:100%;
+            }
+            #search-bar {
+                margin: 100px auto 0;
+                width: 40%;
+            }
+            #search-form {
+                width: 100%;
+                height: 100px;
+                line-height: 1.5em;
+            }
+            #search-input {
+                width: 70%;
+                font-size: 1.5em;
+                padding: 5px 8px;
+                border: 1px solid white;
+                border-radius: 5px;
+                outline: none;
+                color: #232323;
+                letter-spacing: 1px;
+                font-family: monospace;
+            }
+            #search-button {
+                font-size: 1.5em;
+                padding: 5px;
+                background-color: #232323;
+                color: white;
+                box-shadow: none;
+                border: 2px solid white;
+                border-radius: 5px;
+                box-sizing: border-box;
+                outline: none;
+            }
+            #search-button:hover {
+                cursor: pointer;
             }
             #list {
                 margin: auto;
@@ -16,30 +55,39 @@
             }
             .word-div {
                 text-align:left;
-                padding: 40px 0 60px 5%;
-                border-bottom: 2px dashed rgb(92, 92, 92);
-                font-size:1.2em;
+                padding-left:5%;
+                margin: 60px 0;
             }
             .word-title {
                 display:inline-block;
-                line-height:0.1em;
+                line-height:1em;
             }
             .def-list {
                 text-indent: 0;
+                margin: 20px 0;
             }
         </style>
     </head>
     <body>
         <div id="root">
+            
+            <div id='search-bar'>
+                <form id='search-form' action="/search" method="GET">
+                    <input placeholder="Enter word to search..." type="text" name="word" id='search-input' />
+                    <input type="submit" id='search-button' value='Search' />
+                </form>
+            </div>
+
+            
             <div id="list">
                 
                     
                     <div class='word-div'>
-                        <h1 class='word-title'>welcome</h1>&nbsp;
+                        <h1 class='word-title'>overuse</h1>&nbsp;
 
                         
                         
-                        <span>[ˈwel-kəm]</span>&nbsp;
+                        <span>[ˌō-vər-ˈyüz]</span>&nbsp;
                         
 
                         
@@ -49,92 +97,30 @@
                         <p>
                             <span style='font-weight:bold;'>Stemed Words:</span>
                             
-                            <span>welcome</span>
+                            <span>overuse</span>
                             
-                            <span>welcomed</span>
+                            <span>overused</span>
                             
-                            <span>welcomer</span>
+                            <span>overuses</span>
                             
-                            <span>welcomers</span>
-                            
-                            <span>welcomes</span>
-                            
-                            <span>welcoming</span>
+                            <span>overusing</span>
                             
                         </p>
 
                         
                         <ol class='def-list'>
                             
-                            <li>to greet hospitably and with courtesy or cordiality</li>
-                            
-                            <li>to accept with pleasure the occurrence or presence of </li>
+                            <li>to use (something) too much to use (something) excessively or too frequently </li>
                             
                         </ol>
                     </div>
                     
                     <div class='word-div'>
-                        <h1 class='word-title'>welcome</h1>&nbsp;
+                        <h1 class='word-title'>overuse</h1>&nbsp;
 
                         
                         
-
-                        
-                        <span><i>interjection</i></span>
-
-                        
-                        <p>
-                            <span style='font-weight:bold;'>Stemed Words:</span>
-                            
-                            <span>welcome</span>
-                            
-                        </p>
-
-                        
-                        <ol class='def-list'>
-                            
-                        </ol>
-                    </div>
-                    
-                    <div class='word-div'>
-                        <h1 class='word-title'>welcome</h1>&nbsp;
-
-                        
-                        
-
-                        
-                        <span><i>adjective</i></span>
-
-                        
-                        <p>
-                            <span style='font-weight:bold;'>Stemed Words:</span>
-                            
-                            <span>welcome</span>
-                            
-                            <span>welcomely</span>
-                            
-                            <span>welcomeness</span>
-                            
-                            <span>welcomenesses</span>
-                            
-                        </p>
-
-                        
-                        <ol class='def-list'>
-                            
-                            <li>received gladly into one&#39;s presence or companionship </li>
-                            
-                            <li>giving pleasure received with gladness or delight especially in response to a need </li>
-                            
-                            <li>willingly permitted or admitted </li>
-                            
-                        </ol>
-                    </div>
-                    
-                    <div class='word-div'>
-                        <h1 class='word-title'>welcome</h1>&nbsp;
-
-                        
+                        <span>[ˌō-vər-ˈyüs]</span>&nbsp;
                         
 
                         
@@ -144,202 +130,14 @@
                         <p>
                             <span style='font-weight:bold;'>Stemed Words:</span>
                             
-                            <span>welcome</span>
-                            
-                            <span>welcomes</span>
+                            <span>overuse</span>
                             
                         </p>
 
                         
                         <ol class='def-list'>
                             
-                            <li>a greeting or reception usually upon arrival </li>
-                            
-                            <li>the state of being welcome </li>
-                            
-                        </ol>
-                    </div>
-                    
-                    <div class='word-div'>
-                        <h1 class='word-title'>welcome mat</h1>&nbsp;
-
-                        
-                        
-
-                        
-                        <span><i>noun</i></span>
-
-                        
-                        <p>
-                            <span style='font-weight:bold;'>Stemed Words:</span>
-                            
-                            <span>welcome mat</span>
-                            
-                            <span>welcome mats</span>
-                            
-                        </p>
-
-                        
-                        <ol class='def-list'>
-                            
-                            <li>something likened to a mat placed before an entrance as a sign of welcome </li>
-                            
-                        </ol>
-                    </div>
-                    
-                    <div class='word-div'>
-                        <h1 class='word-title'>outstay/overstay one&#39;s welcome</h1>&nbsp;
-
-                        
-                        
-
-                        
-                        <span><i>idiom</i></span>
-
-                        
-                        <p>
-                            <span style='font-weight:bold;'>Stemed Words:</span>
-                            
-                            <span>outstay her welcome</span>
-                            
-                            <span>outstay his welcome</span>
-                            
-                            <span>outstay one&#39;s welcome</span>
-                            
-                            <span>outstay their welcome</span>
-                            
-                            <span>outstay/overstay one&#39;s welcome</span>
-                            
-                            <span>overstay her welcome</span>
-                            
-                            <span>overstay his welcome</span>
-                            
-                            <span>overstay one&#39;s welcome</span>
-                            
-                            <span>overstay their welcome</span>
-                            
-                        </p>
-
-                        
-                        <ol class='def-list'>
-                            
-                            <li>to be no longer welcome to stay in a place because one has stayed too long, been impolite, etc. </li>
-                            
-                        </ol>
-                    </div>
-                    
-                    <div class='word-div'>
-                        <h1 class='word-title'>overstay one&#39;s welcome</h1>&nbsp;
-
-                        
-                        
-
-                        
-                        <span><i>idiom</i></span>
-
-                        
-                        <p>
-                            <span style='font-weight:bold;'>Stemed Words:</span>
-                            
-                            <span>overstay her welcome</span>
-                            
-                            <span>overstay his welcome</span>
-                            
-                            <span>overstay one&#39;s welcome</span>
-                            
-                            <span>overstay their welcome</span>
-                            
-                        </p>
-
-                        
-                        <ol class='def-list'>
-                            
-                            <li>to stay somewhere as a guest longer than one should</li>
-                            
-                        </ol>
-                    </div>
-                    
-                    <div class='word-div'>
-                        <h1 class='word-title'>put/roll/throw out the welcome mat</h1>&nbsp;
-
-                        
-                        
-
-                        
-                        <span><i>idiom</i></span>
-
-                        
-                        <p>
-                            <span style='font-weight:bold;'>Stemed Words:</span>
-                            
-                            <span>put out the welcome mat</span>
-                            
-                            <span>put/roll/throw out the welcome mat</span>
-                            
-                            <span>roll out the welcome mat</span>
-                            
-                            <span>throw out the welcome mat</span>
-                            
-                        </p>
-
-                        
-                        <ol class='def-list'>
-                            
-                            <li>to welcome someone in a warm and friendly way </li>
-                            
-                        </ol>
-                    </div>
-                    
-                    <div class='word-div'>
-                        <h1 class='word-title'>wear out one&#39;s welcome</h1>&nbsp;
-
-                        
-                        
-
-                        
-                        <span><i>idiom</i></span>
-
-                        
-                        <p>
-                            <span style='font-weight:bold;'>Stemed Words:</span>
-                            
-                            <span>wear out her welcome</span>
-                            
-                            <span>wear out his welcome</span>
-                            
-                            <span>wear out one&#39;s welcome</span>
-                            
-                            <span>wear out their welcome</span>
-                            
-                        </p>
-
-                        
-                        <ol class='def-list'>
-                            
-                            <li>to be no longer welcome to stay in a place because one has stayed too long, been impolite, etc. </li>
-                            
-                        </ol>
-                    </div>
-                    
-                    <div class='word-div'>
-                        <h1 class='word-title'>you&#39;re welcome</h1>&nbsp;
-
-                        
-                        
-
-                        
-                        <span><i>idiom</i></span>
-
-                        
-                        <p>
-                            <span style='font-weight:bold;'>Stemed Words:</span>
-                            
-                            <span>you&#39;re welcome</span>
-                            
-                        </p>
-
-                        
-                        <ol class='def-list'>
+                            <li>too much use excessive or too frequent use </li>
                             
                         </ol>
                     </div>
