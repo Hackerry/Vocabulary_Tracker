@@ -70,3 +70,24 @@ func TestWriteEntry(t *testing.T) {
 		}
 	}
 }
+
+func TestSpecialPaths(t *testing.T) {
+	t.Logf("Test special entry names")
+
+	entries := entryStore.ReadEntries("")
+	if entries != nil {
+		t.Errorf("Should be nil")
+	}
+	entries = entryStore.ReadEntries("../something")
+	if entries != nil {
+		t.Errorf("Should be nil")
+	}
+	entries = entryStore.ReadEntries("C:\\something")
+	if entries != nil {
+		t.Errorf("Should be nil")
+	}
+	entries = entryStore.ReadEntries("/bin/bash")
+	if entries != nil {
+		t.Errorf("Should be nil")
+	}
+}

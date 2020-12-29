@@ -3,6 +3,7 @@ package entryStore
 import (
 	"os"
 	"log"
+	"strings"
 	"io/ioutil"
 	"encoding/json"
 	"path/filepath"
@@ -25,7 +26,8 @@ func ReadEntries(word string) []Entry {
 		log.Fatal("Error: found \"entries\" file")
 	}
 
-	if word == "" {
+	word = strings.TrimSpace(word)
+	if word == "" || strings.Index(word, "/") != -1 || strings. Index(word, "\\") != -1 {
 		return nil
 	}
 
@@ -46,19 +48,26 @@ func ReadEntries(word string) []Entry {
 	return entries
 }
 
-func WriteEntries(entries []Entry, word string) {
-	if word == "" {
-		return
+func WriteEntries(entries []Entry, word string) bool {
+	word = strings.TrimSpace(word)
+	if word == "" || strings.Index(word, "/") != -1 || strings. Index(word, "\\") != -1 {
+		return false
 	}
 
 	// Encode into JSON
 	data, err := json.Marshal(entries)
 	if err != nil {
 		log.Println("Error marshaling entries to JSON:", word)
-		return
+		return false
 	}
 
 	// Write to file
 	fileName := filepath.Join(EntryDirectory, word) + ".json"
-	ioutil.WriteFile(fileName, data, 0755)
+	err = ioutil.WriteFile(fileName, data, 0755)
+	if err != nil {
+		log.Println("Fail to write to file", fileName)
+		return false
+	}
+
+	return true
 }
