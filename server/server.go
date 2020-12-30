@@ -32,9 +32,14 @@ func (s *Server) getHomePage(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	// Get all tags if any
+	tags := entryStore.ReadTags()
+	if tags == nil {
+		tags = make([]entryStore.Tag, 0, 0)
+	}
+
 	data := pages.WelcomePage {
-		"Welcome",
-		"Enter content here",
+		Tags: tags,
 	}
 	temp.Execute(w, data)
 }
@@ -51,6 +56,17 @@ func (s *Server) getWordPage(w http.ResponseWriter, req *http.Request) {
 		w.WriteHeader(400)
 		w.Write([]byte("400 Error: wrong format"))
 		return
+	}
+
+	// Get optional tag
+	tag := params["tag"]
+	var tagToUse *entryStore.Tag
+	if tag == nil || len(tag) == 0 {
+		// No tag provided
+		tagToUse = nil
+	} else if readTag := entryStore.ReadTag(tag[0]); readTag != nil {
+		// Construct tag
+		tagToUse = readTag
 	}
 
 	// Query words
@@ -87,6 +103,8 @@ func (s *Server) getWordPage(w http.ResponseWriter, req *http.Request) {
 	}
 
 	data := pages.WordPage {
+		HaveTag:		tagToUse != nil,
+		Tag:			tagToUse,
 		Definitions:	defs,
 		Entries:		entries,
 	}

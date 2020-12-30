@@ -17,10 +17,10 @@ func TestReadTagNames(t *testing.T) {
 		t.Errorf("Failed to retrieve tags %v\n", tags)
 	}
 
-	if tags[0] != "NYTimes" && tags[1] != "NYTimes" {
+	if tags[0].Name != "NYTimes" && tags[1].Name != "NYTimes" {
 		t.Errorf("No NYTimes tag")
 	}
-	if tags[0] != "Sherlock Holmes" && tags[1] != "Sherlock Holmes" {
+	if tags[0].Name != "Sherlock Holmes" && tags[1].Name != "Sherlock Holmes" {
 		t.Errorf("No Sherlock Holmes tag")
 	}
 }

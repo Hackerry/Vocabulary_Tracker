@@ -23,7 +23,7 @@ type Tag struct {
 var colorReg = regexp.MustCompile("^#[0123456789abcdef]{6}$")
 
 // Read all existing tag names
-func ReadTags() []string {
+func ReadTags() []Tag {
 	// Check folder exists
 	if stat, err := os.Stat(TagDirectory); os.IsNotExist(err) {
 		// Directory not exist, create it
@@ -34,7 +34,7 @@ func ReadTags() []string {
 		log.Fatal("Error: found \"tags\" file")
 	}
 
-	listTags := make([]string, 0, 0)
+	listTags := make([]Tag, 0, 0)
 	err := filepath.Walk(TagDirectory, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -47,7 +47,13 @@ func ReadTags() []string {
 		// Must be a json file
 		if filepath.Ext(info.Name()) == JSONExt {
 			fileName := filepath.Base(info.Name())
-			listTags = append(listTags, fileName[:len(fileName)-len(JSONExt)])
+			tagName := fileName[:len(fileName)-len(JSONExt)]
+			tag := ReadTag(tagName)
+			if tag == nil {
+				log.Println("Can't read tag file:", tag)
+			} else {
+				listTags = append(listTags, *tag)
+			}
 		}
 		
 		return nil

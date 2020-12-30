@@ -12,11 +12,12 @@ import (
 const PageDirectory = "pages"
 
 type WelcomePage struct {
-	Title		string
-	Text		string
+	Tags	[]entryStore.Tag
 }
 
 type WordPage struct {
+	HaveTag		bool
+	Tag			*entryStore.Tag
 	Definitions	*api.Definitions
 	Entries		[]entryStore.Entry
 }

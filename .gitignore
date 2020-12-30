@@ -2,3 +2,4 @@ api_key
 example_api_result*.json
 bin/
 entries/
+tags/

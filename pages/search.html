@@ -25,6 +25,7 @@
             }
             #search-form {
                 margin: 0 auto;
+                position: relative;
                 width: 40%;
                 height: 100px;
                 line-height: 1.5em;
@@ -40,6 +41,9 @@
                 letter-spacing: 1px;
                 font-family: monospace;
             }
+            #search-tag {
+                display: none;
+            }
             #search-button {
                 font-size: 1.5em;
                 padding: 5px;
@@ -53,6 +57,23 @@
             }
             #search-button:hover {
                 cursor: pointer;
+            }
+            .tag-pasted {
+                position: absolute;
+                display: inline-block;
+                border-radius: 5px 5px 0 0;
+                padding: 5px 10px;
+                font-size: 1.5em;
+                top: -1.2em;
+            }
+            #spell-error-div {
+                margin: 20px auto;
+                font-size: 1.5em;
+                font-weight: bold;
+            }
+            #spell-error-guess {
+                font-size: 1em;
+                font-weight: normal;
             }
             #word-list {
                 margin: auto;
@@ -90,7 +111,13 @@
             <!-- Search bar -->
             <div id='search-bar'>
                 <form id='search-form' action="/search" method="GET">
+                    {{if .HaveTag}}
+                    <div class='tag-pasted' style="background-color: {{.Tag.BgColor}}; color: {{.Tag.TxColor}}">{{.Tag.Name}}</div>
+                    {{end}}
                     <input placeholder="Enter word to search..." type="text" name="word" id='search-input' />
+                    {{if .HaveTag}}
+                    <input name='tag' id='search-tag' value='{{.Tag.Name}}' />
+                    {{end}}
                     <input type="submit" id='search-button' value='Search' />
                 </form>
             </div>
@@ -99,11 +126,11 @@
                 <!-- Search list -->
                 <div id="word-list">
                     {{if .Definitions.SpellError}}
-                        <div>
-                            <span style="font-weight:bold">Did you mean:</span>
+                        <div id='spell-error-div'>
+                            <span id='spell-error-title'>Did you mean:</span>
                             <p>
-                                {{range .GuessWords}}
-                                <span>{{.}}</span><br>
+                                {{range .Definitions.GuessWords}}
+                                <span id='spell-error-guess'>{{.}}</span><br>
                                 {{end}}
                             </p>
                         </div>
