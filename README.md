@@ -12,15 +12,15 @@ The main purpose of this program is to organize words in two ways:
 For example, while reading the novel "Sherlock Holmes" by Arthur Conan Doyle, I learned the word **"page"** which refers to a boy who is serving a nobel person, along with  other words like **wagon**, **speckled**, etc.
 
 Therefore, I can group those words together under a **tag** called "Sherlock Holmes".
-![HomePage](https://github.com/Hackerry/Vocabulary_Tracker/blob/main/imgs/HomePage.jpg?raw=true)
+![HomePage](https://github.com/Hackerry/Vocabulary_Tracker/blob/main/imgs/HomePage.png?raw=true)
 
 **2. The same word itself in different scenarios.**<br>
 
 For example, the word **page** refers to not only a paper but also a boy who is serving a nobel person.
 
 I record those two different meanings of page that I've encountered as comment entries alongside the complete definition of "page".
-![SearchPage](https://github.com/Hackerry/Vocabulary_Tracker/blob/main/imgs/SearchPage.jpg?raw=true)
-![Entries](https://github.com/Hackerry/Vocabulary_Tracker/blob/main/imgs/Entries.jpg?raw=true)
+![SearchPage](https://github.com/Hackerry/Vocabulary_Tracker/blob/main/imgs/SearchPage.png?raw=true)
+![Entries](https://github.com/Hackerry/Vocabulary_Tracker/blob/main/imgs/Entries.png?raw=true)
 
 # How to run
 0. GOlang 1.14+ installed.
