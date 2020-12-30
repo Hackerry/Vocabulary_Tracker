@@ -18,6 +18,15 @@
                 width: 40%;
                 margin: 0 auto;
             }
+            #home-title {
+                position: absolute;
+                top: 3%;
+                left: 5%;
+            }
+            #home-title a {
+                text-decoration: none;
+                font-size: 2em;
+            }
             #search-bar {
                 margin: 0 auto;
                 padding: 100px 0 20px;
@@ -47,7 +56,7 @@
             #search-button {
                 font-size: 1.5em;
                 padding: 5px;
-                background-color: #232323;
+                background-color: #353535;
                 color: white;
                 box-shadow: none;
                 border: 2px solid white;
@@ -57,13 +66,17 @@
             }
             #search-button:hover {
                 cursor: pointer;
+                background-color: #232323;
+            }
+            .tag {
+                display: inline-block;
+                padding: 5px 10px;
+                font-size: 1.5em;
+                border-radius: 5px;
             }
             .tag-pasted {
                 position: absolute;
-                display: inline-block;
                 border-radius: 5px 5px 0 0;
-                padding: 5px 10px;
-                font-size: 1.5em;
                 top: -1.2em;
             }
             #spell-error-div {
@@ -93,26 +106,63 @@
                 text-indent: 0;
                 margin: 20px 0;
             }
-            .entry-list {
+            #entry-list {
                 margin: auto;
+                min-height: 250px;
+                margin-bottom: 200px;
             }
             .entry-div {
                 text-align: left;
                 padding-left: 5%;
+                margin: 70px 0;
             }
             .entry-comment {
                 margin: 20px 0;
                 padding-left: 50px;
             }
+
+            #comment-form {
+                margin-top: 150px;
+            }
+            #comment-input {
+                width: 100%;
+                font-size: 1.2em;
+                letter-spacing: 1px;
+                padding: 10px;
+                background: #353535;
+                border: 2px solid white;
+                outline: none;
+                min-height: 150px;
+            }
+            #comment-title {
+                margin:20px 0;
+                text-align:left;
+            }
+            #comment-button {
+                width: 100%;
+                padding: 5px;
+                background-color: #353535;
+                border: 2px solid white;
+                font-size: 1.2em;
+                margin-top: -1px;
+                transition: all ease-in-out 0.2s;
+            }
+            #comment-button:hover {
+                cursor: pointer;
+                background-color: #232323;
+            }
         </style>
     </head>
     <body>
         <div id="root">
+            <!-- Home link -->
+            <div id='home-title'><a href='/'>Home</a></div>
+
             <!-- Search bar -->
             <div id='search-bar'>
                 <form id='search-form' action="/search" method="GET">
                     {{if .HaveTag}}
-                    <div class='tag-pasted' style="background-color: {{.Tag.BgColor}}; color: {{.Tag.TxColor}}">{{.Tag.Name}}</div>
+                    <div class='tag tag-pasted' style="background-color: {{.Tag.BgColor}}; color: {{.Tag.TxColor}}">{{.Tag.Name}}</div>
                     {{end}}
                     <input placeholder="Enter word to search..." type="text" name="word" id='search-input' />
                     {{if .HaveTag}}
@@ -170,10 +220,17 @@
                 <div id='entry-list'>
                     {{range .Entries}}
                     <div class='entry-div'>
-                        <p class='entry-date'><i>{{.Date}}</i></p>
-                        <p class='entry-comment'>{{.Comment}}</p>
+                        <p class='entry-date'><i>{{.Date}}</i>&nbsp;&nbsp;<u>{{.Tag}}</u></p>
+                        <p class='entry-comment'>"{{.Comment}}"</p>
                     </div>
                     {{end}}
+
+                    <!-- Submit new entry -->
+                    <form method="POST" id='comment-form'>
+                        <h2 id='comment-title'>New Entry</h2>
+                        <textarea placeholder="Optional comment goes here..." type="text" name="comment" id='comment-input'></textarea>
+                        <input type='submit' value='Submit' id='comment-button' />
+                    </form>
                 </div>
             </div>
         </div>

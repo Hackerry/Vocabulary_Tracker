@@ -13,6 +13,8 @@ const PageDirectory = "pages"
 
 type WelcomePage struct {
 	Tags	[]entryStore.Tag
+	HaveMsg	bool
+	Message	string
 }
 
 type WordPage struct {

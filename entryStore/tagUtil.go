@@ -68,6 +68,11 @@ func ReadTags() []Tag {
 
 // Helper function to read a tag file
 func ReadTag(tag string) *Tag {
+	tag = strings.TrimSpace(tag)
+	if tag == "" {
+		return nil
+	}
+
 	fileName := filepath.Join(TagDirectory, tag + JSONExt)
 
 	// Can't find tag file

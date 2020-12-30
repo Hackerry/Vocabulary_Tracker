@@ -30,8 +30,8 @@ func TestReadEntry(t *testing.T) {
 	}
 
 	entries = entryStore.ReadEntries("non-exist")
-	if entries != nil {
-		t.Errorf("Should return nil")
+	if entries == nil || len(entries) != 0 {
+		t.Errorf("Should return empty list")
 	}
 
 	entries = entryStore.ReadEntries("")
@@ -48,9 +48,9 @@ func TestWriteEntry(t *testing.T) {
 	_ = os.Remove(fileName)
 
 	entries := []entryStore.Entry {
-		entryStore.Entry{"09/01/2010", "comment 0"},
-		entryStore.Entry{"10/01/2010", "comment 1"},
-		entryStore.Entry{"11/01/2010", "comment 2"},
+		entryStore.Entry{"09/01/2010", "comment 0", ""},
+		entryStore.Entry{"10/01/2010", "comment 1", ""},
+		entryStore.Entry{"11/01/2010", "comment 2", ""},
 	}
 
 	entryStore.WriteEntries(entries, word)

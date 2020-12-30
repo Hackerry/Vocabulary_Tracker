@@ -3,3 +3,4 @@ example_api_result*.json
 bin/
 entries/
 tags/
+cache/

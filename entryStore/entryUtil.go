@@ -14,8 +14,10 @@ const EntryDirectory = "entries"
 type Entry struct {
 	Date	string
 	Comment	string
+	Tag		string
 }
 
+// Helper method that reads entries
 func ReadEntries(word string) []Entry {
 	// Check folder exists
 	if stat, err := os.Stat(EntryDirectory); os.IsNotExist(err) {
@@ -34,6 +36,12 @@ func ReadEntries(word string) []Entry {
 	// Retrieve entries
 	var entries []Entry
 	fileName := filepath.Join(EntryDirectory, word) + ".json"
+
+	// Possible file doesn't exist, return an empty list
+	if _, err := os.Stat(fileName); os.IsNotExist(err) {
+		return make([]Entry, 0, 0)
+	}
+
 	data, err := ioutil.ReadFile(fileName)
 	if err != nil {
 		log.Println("Can't read entry file:", fileName, "-", err)
@@ -48,6 +56,7 @@ func ReadEntries(word string) []Entry {
 	return entries
 }
 
+// Helper method that writes entries
 func WriteEntries(entries []Entry, word string) bool {
 	word = strings.TrimSpace(word)
 	if word == "" || strings.Index(word, "/") != -1 || strings. Index(word, "\\") != -1 {

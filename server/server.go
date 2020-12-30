@@ -1,11 +1,15 @@
 package server
 
 import (
+	"os"
 	"log"
+	"time"
 	"regexp"
 	"strings"
 	"strconv"
 	"net/http"
+	"io/ioutil"
+	"path/filepath"
 
 	"github.com/Hackerry/Vocabulary_Tracker/pages"
 	"github.com/Hackerry/Vocabulary_Tracker/api"
@@ -13,6 +17,9 @@ import (
 )
 
 const Port = 8080
+const TimeFormat = "2006/01/02 15:04:05"
+const CacheDirectory = "cache"
+const CachedQueryFile = "_cache.json"
 
 var reg = regexp.MustCompile("^[^\\%?&#!/:.'\"=^$]*$")
 
@@ -32,21 +39,39 @@ func (s *Server) getHomePage(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	// Post request to add new tag
+	var data pages.WelcomePage
+	if req.Method == "POST" {
+		// Create tag
+		if err := req.ParseForm(); err != nil {
+			log.Println("Failed to parse form in getHomePage", err)
+			return
+		}
+		tag := req.FormValue("addTag")
+		bgColor := req.FormValue("bgColor")
+		txColor := req.FormValue("txColor")
+
+		// Error creating new tag, report error to user
+		newTag, msg := entryStore.CreateTag(tag, bgColor, txColor)
+		if newTag == nil {
+			data.Message = msg
+			data.HaveMsg = true
+		}
+	}
+
 	// Get all tags if any
 	tags := entryStore.ReadTags()
 	if tags == nil {
 		tags = make([]entryStore.Tag, 0, 0)
 	}
 
-	data := pages.WelcomePage {
-		Tags: tags,
-	}
+	data.Tags = tags
 	temp.Execute(w, data)
 }
 
 // Get search word page
 func (s *Server) getWordPage(w http.ResponseWriter, req *http.Request) {
-	// Query for word
+	// Get word from parameter
 	params := req.URL.Query()
 	word := params["word"]
 
@@ -57,6 +82,7 @@ func (s *Server) getWordPage(w http.ResponseWriter, req *http.Request) {
 		w.Write([]byte("400 Error: wrong format"))
 		return
 	}
+	queryWord := strings.TrimSpace(word[0])
 
 	// Get optional tag
 	tag := params["tag"]
@@ -69,14 +95,73 @@ func (s *Server) getWordPage(w http.ResponseWriter, req *http.Request) {
 		tagToUse = readTag
 	}
 
-	// Query words
-	queryWord := strings.TrimSpace(word[0])
-	queryResp := s.api.Query(queryWord)
-	if queryResp == nil {
-		// TODO send 500
-		w.WriteHeader(500)
-		w.Write([]byte("500 Error: fail to query for word"))
-		return
+	// Post new comment on this word
+	if req.Method == "POST" {
+		if err := req.ParseForm(); err != nil {
+			log.Println("Failed to parse form in getWordPage")
+			return
+		}
+		
+		// Create new comment
+		comment := req.FormValue("comment")
+		t := time.Now()
+		date := t.Format(TimeFormat)
+		var tagName string
+		if tagToUse == nil {
+			tagName = ""
+		} else {
+			tagName = tagToUse.Name
+		}
+		entry := entryStore.Entry {
+			Date:		date,
+			Comment:	comment,
+			Tag:		tagName,
+		}
+
+		entries := entryStore.ReadEntries(queryWord)
+		if entries == nil {
+			log.Println("Error reading entry file")
+		} else {
+			entries = append(entries, entry)
+			entryStore.WriteEntries(entries, queryWord)
+		}
+	}
+
+	// Search through cache first
+	var queryResp []byte
+	cacheFileName := queryWord + CachedQueryFile
+	if _, err := os.Stat(cacheFileName); os.IsNotExist(err) {
+		// Query words
+		queryResp = s.api.Query(queryWord)
+		if queryResp == nil {
+			// TODO send 500
+			w.WriteHeader(500)
+			w.Write([]byte("500 Error: fail to query for word: " + queryWord))
+			return
+		}
+
+		// Create cache folder
+		if stat, err := os.Stat(CacheDirectory); os.IsNotExist(err) {
+			// Directory not exist, create it
+			os.Mkdir(CacheDirectory, 0755)
+		} else if !stat.Mode().IsDir() {
+			// Not directory
+			log.Fatal("Error: found \"cache\" file")
+		}
+
+		// To save some api usage, cache all words queried
+		err := ioutil.WriteFile(filepath.Join(CacheDirectory, cacheFileName), queryResp, 0644)
+		if err != nil {
+			log.Println("Failed to cache response")
+		}
+	} else {
+		queryResp, err = ioutil.ReadFile(cacheFileName)
+		if err != nil {
+			// TODO send 500
+			w.WriteHeader(500)
+			w.Write([]byte("500 Error: fail to read cache file: " + cacheFileName))
+			return
+		}
 	}
 
 	// Parse response, filter out idioms, prefix & suffixs
