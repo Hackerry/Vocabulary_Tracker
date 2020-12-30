@@ -20,7 +20,7 @@
             }
             #content {
                 width: 60%;
-                padding-top: 200px;
+                padding-top: 100px;
                 margin: 0 auto;
             }
             #nav-bar {
@@ -117,7 +117,7 @@
                 margin: 50px 0 20px 0;
                 text-align: left;
                 width: 80%;
-                display: inline-block;
+                display: none;
             }
             #tag-input {
                 width: 70%;
@@ -167,23 +167,33 @@
                 font-size: 1.5em;
                 margin: 10px 5px;
             }
+            #tag-words {
+                margin: 50px;
+                text-align: left;
+            }
+            #tag-words a {
+                text-decoration: none;
+                color: white;
+                font-size: 1.5em;
+                display: block;
+                margin: 10px 0;
+            }
+            #tag-words-title {
+                font-weight: bold;
+                font-size: 2em;
+                color: white;
+                display: block;
+                padding-bottom: 20px;
+                border-bottom: 2px solid white;
+                margin-bottom: 20px;
+            }
         </style>
     </head>
     <body>
         <div id='root'>
             <div id='nav-bar'><a href='/'>Home</a>&nbsp;&nbsp;<a href='/tag'>Tags</a></div>
 
-            <!-- Search bar -->
-            <div id='content'>
-                <h1 id='title'>Vocabulary Tracker</h1>
-                <div id='search-bar'>
-                    <form action="/search" method="GET" id='search-form'>
-                        <input placeholder="Enter word to search..." type="text" name="word" id='search-input' />
-                        <input name='tag' id='search-tag' />
-                        <input type="submit" id='search-button' value='Search' />
-                    </form>
-                </div>
-    
+            <div id='content'>    
                 <!-- Tags -->
                 <div id='tag-div'>
                     <div id='tag-list'>
@@ -192,17 +202,19 @@
                         <div class='tag-elem' onClick="tagSelect(this)" style="background-color: {{.BgColor}}; color: {{.TxColor}}">{{.Name}}</div>
                         {{end}}
                     </div>
-                    <form action="/" method="POST" id='tag-form'>
-                        <input placeholder="Create new tag..." type="text" name="addTag" id='tag-input' />
-                        <input type="color" name='bgColor' id='bgcolor' value='#000000' />
-                        <input type="color" name='txColor' id='txcolor' value='#ffffff' />
-                        <input type="submit" id='tag-button' value='Create' /><br>
-                        <h2 id='example-title' style="display:none;margin-top:20px;">Preview:</h2><div id='example-label' style='display:none;'></div>
-                    </form>
 
-                    <!-- Create tag message -->
-                    {{if .HaveMsg}}
-                    <div id='tag-message'>{{.Message}}</div>
+                    <form method='GET' action='/tag' id='tag-form'>
+                        <input name='tag' type='hidden' id='tag-input'>
+                    </form>
+                </div>
+
+                <!-- Words -->
+                <div id='tag-words'>
+                    {{if .CurrTag ne ""}}
+                    <h2 id='tag-words-title'>{{.CurrTag}}</h2>
+                    {{range .Words}}
+                    <a href='/search?word={{.}}'>{{.}}</a><br>
+                    {{end}}
                     {{end}}
                 </div>
             </div>
@@ -210,33 +222,18 @@
 
         <script>
             // Toggle selected tags
-            var tagInput = document.getElementById('search-tag');
             var tags = document.getElementsByClassName('tag-elem');
+            var tagInput = document.getElementById('tag-input')
+            var tagForm = document.getElementById('tag-form')
             function tagSelect(e) {
-                tagInput.value = e.innerHTML;
                 for(var i = 0; i < tags.length; i++) {
                     tags[i].className = 'tag-elem';
                 }
                 e.className = 'tag-elem tag-elem-select';
-            }
 
-            // Show example label
-            var example = document.getElementById('example-label');
-            var exampleT = document.getElementById('example-title');
-            var labelInput = document.getElementById('tag-input');
-            var bgColorInput = document.getElementById('bgcolor');
-            var txColorInput = document.getElementById('txcolor');
-
-            labelInput.onkeyup = showExample;
-            bgColorInput.onchange = showExample;
-            txColorInput.onchange = showExample;
-
-            function showExample() {
-                example.style.display = "inline-block";
-                exampleT.style.display = "inline-block";
-                example.innerHTML = labelInput.value;
-                example.style.backgroundColor = bgColorInput.value;
-                example.style.color = txColorInput.value;
+                // Set input and get words
+                tagInput.value = e.innerHTML;
+                tagForm.submit();
             }
         </script>
     </body>

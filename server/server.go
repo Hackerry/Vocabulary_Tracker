@@ -118,12 +118,18 @@ func (s *Server) getWordPage(w http.ResponseWriter, req *http.Request) {
 			Tag:		tagName,
 		}
 
+		// Write entry
 		entries := entryStore.ReadEntries(queryWord)
 		if entries == nil {
 			log.Println("Error reading entry file")
 		} else {
 			entries = append(entries, entry)
 			entryStore.WriteEntries(entries, queryWord)
+		}
+
+		// Store word to tag
+		if tagName != "" {
+			entryStore.AddWord(tagName, queryWord)
 		}
 	}
 
@@ -164,26 +170,28 @@ func (s *Server) getWordPage(w http.ResponseWriter, req *http.Request) {
 		}
 	}
 
-	// Parse response, filter out idioms, prefix & suffixs
 	defs := s.api.Parser(queryResp)
-	if defs.DefList != nil {
-		queryWordDefs := make([]api.Definition, 0, 0)
-		for _, def := range defs.DefList {
-			if strings.ToLower(def.Word) == strings.ToLower(queryWord) {
-				queryWordDefs = append(queryWordDefs, def)
-			}
-		}
 
-		defs.DefList = queryWordDefs
-	}
+	// Uncomment to filter out idioms, prefix & suffixs and only keep words matching exactly as input
+	// if defs.DefList != nil {
+	// 	queryWordDefs := make([]api.Definition, 0, 0)
+	// 	for _, def := range defs.DefList {
+	// 		if strings.ToLower(def.Word) == strings.ToLower(queryWord) {
+	// 			queryWordDefs = append(queryWordDefs, def)
+	// 		}
+	// 	}
 
-	// Get user entry
+	// 	defs.DefList = queryWordDefs
+	// }
+
+	// Get user entries
 	entries := entryStore.ReadEntries(queryWord)
-	if entries == nil {
+	if entries == nil || len(entries) == 0 {
 		entries = make([]entryStore.Entry, 1, 1)
 		entries[0] = entryStore.Entry {
 			Date: 		"",
 			Comment: 	"No Entry Found",
+			Tag:		"",
 		}
 	}
 
@@ -205,13 +213,56 @@ func (s *Server) getWordPage(w http.ResponseWriter, req *http.Request) {
 	temp.Execute(w, data)
 }
 
+// Helper function to get all tags and words
+func (s *Server) getTagPage(w http.ResponseWriter, req *http.Request) {
+	// Get all tags
+	tags := entryStore.ReadTags()
+	if tags == nil {
+		tags = make([]entryStore.Tag, 0, 0)
+	}
+
+	// Get words for the selected tag
+	params := req.URL.Query()
+	tag := params["tag"]
+
+	var words []string
+	tagName := ""
+	if tag == nil || len(tag) == 0 {
+		words = make([]string, 0, 0)
+	} else {
+		// Get words from the current tag
+		tagName = strings.TrimSpace(tag[0])
+		for _, t := range tags {
+			if t.Name == tagName {
+				words = t.Words
+			}
+		}
+	}
+
+	data := pages.TagPage {
+		Tags: tags,
+		Words: words,
+		CurrTag: tagName,
+	}
+
+	temp := pages.GetTemplate("tags.html")
+	if temp == nil {
+		// TODO send 500
+		w.WriteHeader(500)
+		w.Write([]byte("500 Error: can't get tag page template"))
+		return
+	}
+	temp.Execute(w, data)
+}
+
 func (s *Server) Serve() {
 	// Register all operations
 	http.HandleFunc("/", s.getHomePage)
 	http.HandleFunc("/search", s.getWordPage)
+	http.HandleFunc("/tag", s.getTagPage)
 
 	// Clear cache on start
-	_ = os.Remove(CacheDirectory)
+	_ = os.RemoveAll(CacheDirectory)
 	
 	// Starting server
 	log.Println("Starting server...")

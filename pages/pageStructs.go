@@ -24,6 +24,12 @@ type WordPage struct {
 	Entries		[]entryStore.Entry
 }
 
+type TagPage struct {
+	Tags	[]entryStore.Tag
+	CurrTag	string
+	Words	[]string
+}
+
 // Retrieve template file
 func GetTemplate(fileName string) *template.Template {
 	f := filepath.Join(PageDirectory, fileName)

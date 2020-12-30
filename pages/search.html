@@ -18,12 +18,13 @@
                 width: 40%;
                 margin: 0 auto;
             }
-            #home-title {
+            #nav-bar {
                 position: absolute;
                 top: 3%;
                 left: 5%;
+                font-family: monospace;
             }
-            #home-title a {
+            #nav-bar a {
                 text-decoration: none;
                 font-size: 2em;
             }
@@ -84,9 +85,11 @@
                 font-size: 1.5em;
                 font-weight: bold;
             }
-            #spell-error-guess {
+            .spell-error-guess {
                 font-size: 1em;
                 font-weight: normal;
+                text-decoration: none;
+                color: white;
             }
             #word-list {
                 margin: auto;
@@ -118,7 +121,7 @@
             }
             .entry-comment {
                 margin: 20px 0;
-                padding-left: 50px;
+                padding-left: 30px;
             }
 
             #comment-form {
@@ -156,7 +159,7 @@
     <body>
         <div id="root">
             <!-- Home link -->
-            <div id='home-title'><a href='/'>Home</a></div>
+            <div id='nav-bar'><a href='/'>Home</a>&nbsp;&nbsp;<a href='/tag'>Tags</a></div>
 
             <!-- Search bar -->
             <div id='search-bar'>
@@ -180,7 +183,7 @@
                             <span id='spell-error-title'>Did you mean:</span>
                             <p>
                                 {{range .Definitions.GuessWords}}
-                                <span id='spell-error-guess'>{{.}}</span><br>
+                                <a class='spell-error-guess' href='/search?word={{.}}'>{{.}}</a><br>
                                 {{end}}
                             </p>
                         </div>
@@ -221,7 +224,7 @@
                     {{range .Entries}}
                     <div class='entry-div'>
                         <p class='entry-date'><i>{{.Date}}</i>&nbsp;&nbsp;<u>{{.Tag}}</u></p>
-                        <p class='entry-comment'>"{{.Comment}}"</p>
+                        <p class='entry-comment'>{{.Comment}}</p>
                     </div>
                     {{end}}
 
