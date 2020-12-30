@@ -209,6 +209,9 @@ func (s *Server) Serve() {
 	// Register all operations
 	http.HandleFunc("/", s.getHomePage)
 	http.HandleFunc("/search", s.getWordPage)
+
+	// Clear cache on start
+	_ = os.Remove(CacheDirectory)
 	
 	// Starting server
 	log.Println("Starting server...")
