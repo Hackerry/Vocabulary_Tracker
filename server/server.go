@@ -21,7 +21,7 @@ const TimeFormat = "2006/01/02 15:04:05"
 const CacheDirectory = "cache"
 const CachedQueryFile = "_cache.json"
 
-var reg = regexp.MustCompile("^[^\\%?&#!/:.'\"=^$]*$")
+var reg = regexp.MustCompile("^[^\\%?&#!/:.\"=^$]*$")
 
 // TODO cache all page templates before server starting
 
@@ -52,11 +52,8 @@ func (s *Server) getHomePage(w http.ResponseWriter, req *http.Request) {
 		txColor := req.FormValue("txColor")
 
 		// Error creating new tag, report error to user
-		newTag, msg := entryStore.CreateTag(tag, bgColor, txColor)
-		if newTag == nil {
-			data.Message = msg
-			data.HaveMsg = true
-		}
+		_, msg := entryStore.CreateTag(tag, bgColor, txColor)
+		data.Message = msg
 	}
 
 	// Get all tags if any
@@ -75,7 +72,7 @@ func (s *Server) getWordPage(w http.ResponseWriter, req *http.Request) {
 	params := req.URL.Query()
 	word := params["word"]
 
-	// Sanitize word input to disallow [^\%?&#!/:.'"=] special characters
+	// Sanitize word input to disallow [^\%?&#!/:."=] special characters
 	if word == nil || len(word) == 0 || !reg.Match([]byte(word[0])) {
 		// TODO send 400
 		w.WriteHeader(400)

@@ -126,7 +126,7 @@ func CreateTag(tag string, bgColor string, textColor string) (*Tag, string) {
 	if tag == "" {
 		return nil, "Can't use empty string as tag name."
 	} else if strings.Index(tag, "/") != -1 || strings. Index(tag, "\\") != -1 {
-		return nil, "Can't use path separator('\\', '/') characters as tag name."
+		return nil, "Can't use path separator('\\', '/') characters in tag name."
 	}
 
 	// Check if tag already exists

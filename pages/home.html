@@ -201,7 +201,7 @@
                     </form>
 
                     <!-- Create tag message -->
-                    {{if .HaveMsg}}
+                    {{if ne .Message ""}}
                     <div id='tag-message'>{{.Message}}</div>
                     {{end}}
                 </div>
