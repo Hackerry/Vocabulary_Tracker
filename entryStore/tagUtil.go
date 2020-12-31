@@ -165,3 +165,19 @@ func CreateTag(tag string, bgColor string, textColor string) (*Tag, string) {
 
 	return &newTag, ""
 }
+
+// Sorter by number of words order
+type Tags []Tag
+
+func (s Tags) Len() int {
+	return len(s)
+}
+func (s Tags) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+
+type WordsCountSorter struct { Tags }
+
+func (n WordsCountSorter) Less(i, j int) bool {
+	return len(n.Tags[i].Words) > len(n.Tags[j].Words)
+}

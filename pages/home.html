@@ -189,7 +189,7 @@
                     <div id='tag-list'>
                         <h2 id='tag-title'>Tags:</h2>
                         {{range .Tags}}
-                        <div class='tag-elem' onClick="tagSelect(this)" style="background-color: {{.BgColor}}; color: {{.TxColor}}">{{.Name}}</div>
+                        <div class='tag-elem' onClick="tagSelect(this)" id='tag-name-{{.Name}}' style="background-color: {{.BgColor}}; color: {{.TxColor}}">{{.Name}}&nbsp;-&nbsp;{{len .Words}}</div>
                         {{end}}
                     </div>
                     <form action="/" method="POST" id='tag-form'>
@@ -208,12 +208,14 @@
             </div>
         </div>
 
-        <script>
+        <script type="text/javascript">
             // Toggle selected tags
+            var tagNamePrefix = 'tag-name-';
             var tagInput = document.getElementById('search-tag');
             var tags = document.getElementsByClassName('tag-elem');
             function tagSelect(e) {
-                tagInput.value = e.innerHTML;
+                var id = e.id;
+                tagInput.value = id.substring(tagNamePrefix.length);
                 for(var i = 0; i < tags.length; i++) {
                     tags[i].className = 'tag-elem';
                 }

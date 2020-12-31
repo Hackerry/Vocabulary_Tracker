@@ -199,7 +199,7 @@
                     <div id='tag-list'>
                         <h2 id='tag-title'>Tags:</h2>
                         {{range .Tags}}
-                        <div class='tag-elem' onClick="tagSelect(this)" style="background-color: {{.BgColor}}; color: {{.TxColor}}">{{.Name}}</div>
+                        <div class='tag-elem' onClick="tagSelect(this)" id='tag-name-{{.Name}}' style="background-color: {{.BgColor}}; color: {{.TxColor}}">{{.Name}}&nbsp;-&nbsp;{{len .Words}}</div>
                         {{end}}
                     </div>
 
@@ -210,11 +210,11 @@
 
                 <!-- Words -->
                 <div id='tag-words'>
-                    {{if .CurrTag ne ""}}
-                    <h2 id='tag-words-title'>{{.CurrTag}}</h2>
-                    {{range .Words}}
-                    <a href='/search?word={{.}}'>{{.}}</a><br>
-                    {{end}}
+                    {{if ne .CurrTag ""}}
+                        <h2 id='tag-words-title'>{{.CurrTag}}</h2>
+                        {{range .Words}}
+                        <a href='/search?word={{.}}'>{{.}}</a><br>
+                        {{end}}
                     {{end}}
                 </div>
             </div>
@@ -222,17 +222,15 @@
 
         <script>
             // Toggle selected tags
+            var tagNamePrefix = 'tag-name-';
+            var tagInput = document.getElementById('tag-input');
+            var tagForm = document.getElementById('tag-form');
             var tags = document.getElementsByClassName('tag-elem');
-            var tagInput = document.getElementById('tag-input')
-            var tagForm = document.getElementById('tag-form')
+    
             function tagSelect(e) {
-                for(var i = 0; i < tags.length; i++) {
-                    tags[i].className = 'tag-elem';
-                }
-                e.className = 'tag-elem tag-elem-select';
-
                 // Set input and get words
-                tagInput.value = e.innerHTML;
+                var id = e.id;
+                tagInput.value = id.substring(tagNamePrefix.length);
                 tagForm.submit();
             }
         </script>

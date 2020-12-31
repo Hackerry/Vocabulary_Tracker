@@ -47,7 +47,7 @@ To connect to other dictionary APIs, implement the JSON Parser first (i.e. examp
 Then modify the server to use the new API in `./main.go`.
 
 # Features to add list
-1. Display all words tagged by a certain tag
+~~1. Display all words tagged by a certain tag~~
 2. Support edit/modify/delete entries and tags
 3. Support uploading multimedia?
 

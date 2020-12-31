@@ -3,6 +3,7 @@ package server
 import (
 	"os"
 	"log"
+	"sort"
 	"time"
 	"regexp"
 	"strings"
@@ -60,6 +61,9 @@ func (s *Server) getHomePage(w http.ResponseWriter, req *http.Request) {
 	tags := entryStore.ReadTags()
 	if tags == nil {
 		tags = make([]entryStore.Tag, 0, 0)
+	} else {
+		// Sort by tagged numbers count
+		sort.Sort(entryStore.WordsCountSorter{tags})
 	}
 
 	data.Tags = tags
@@ -216,6 +220,9 @@ func (s *Server) getTagPage(w http.ResponseWriter, req *http.Request) {
 	tags := entryStore.ReadTags()
 	if tags == nil {
 		tags = make([]entryStore.Tag, 0, 0)
+	} else {
+		// Sort by tagged numbers count
+		sort.Sort(entryStore.WordsCountSorter{tags})
 	}
 
 	// Get words for the selected tag

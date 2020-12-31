@@ -1,33 +1,46 @@
-
 <html>
     <head>
         <style>
             * {
                 margin: 0;
-                color: white;
             }
-            html, body {
+            body, html {
+                margin: 0;
                 width: 100%;
-                font-family: monospace, serif;
+                height: 100%;
                 background-color: #232323;
             }
             #root {
-                text-align:center;
-                width:100%;
+                margin: auto;
+                text-align: center;
+                width: 100%;
+                height: 100%;
+                font-family: monospace;
+                text-align: center;
             }
             #content {
-                width: 40%;
+                width: 60%;
+                padding-top: 100px;
                 margin: 0 auto;
             }
-            #search-bar {
-                margin: 0 auto;
-                padding: 100px 0 20px;
-                background-color: #636363;
+            #nav-bar {
+                position: absolute;
+                top: 3%;
+                left: 5%;
+            }
+            #nav-bar a {
+                text-decoration: none;
+                font-size: 2em;
+                color: white;
+            }
+            #title {
+                font-size: 4em;
+                color: white;
+                margin-bottom: 80px;
             }
             #search-form {
-                margin: 0 auto;
-                position: relative;
-                width: 40%;
+                margin: 20px auto 0px;
+                width: 100%;
                 height: 100px;
                 line-height: 1.5em;
             }
@@ -48,214 +61,183 @@
             #search-button {
                 font-size: 1.5em;
                 padding: 5px;
-                background-color: #232323;
+                background-color: #353535;
                 color: white;
                 box-shadow: none;
                 border: 2px solid white;
                 border-radius: 5px;
                 box-sizing: border-box;
                 outline: none;
+                transition: all ease-in-out 0.2s;
             }
             #search-button:hover {
                 cursor: pointer;
+                background-color: #232323;
             }
-            .tag {
+            #tag-div {
+                width: 100%;
+                padding: 20px;
+                text-align: center;
+                box-sizing: border-box;
+                background-color: #636363;
+                border-radius: 10px;
+            }
+            #tag-list {
+                width: 80%;
+                margin: 0 auto;
+                text-align: left;
+            }
+            #tag-title {
+                padding-left: 5px;
+                font-size: 1.5em;
+                line-height: 1.5em;
+                color: white;
                 display: inline-block;
+            }
+            .tag-elem {
+                display: inline-block;
+                border-radius: 5px;
                 padding: 5px 10px;
                 font-size: 1.5em;
-                border-radius: 5px;
+                margin: 10px 5px;
+                transition: all ease-in-out 0.15s;
+                box-shadow: 5px 5px 7px #222222;
             }
-            .tag-pasted {
-                position: absolute;
-                border-radius: 5px 5px 0 0;
-                top: -1.2em;
+            .tag-elem:hover {
+                cursor: pointer;
+                box-shadow: 2px 2px 2px #222222;
             }
-            #spell-error-div {
-                margin: 20px auto;
-                font-size: 1.5em;
-                font-weight: bold;
+            .tag-elem-select {
+                box-shadow: none
             }
-            #spell-error-guess {
-                font-size: 1em;
-                font-weight: normal;
+            .tag-elem-select:hover {
+                box-shadow: none;
             }
-            #word-list {
-                margin: auto;
-            }
-            .word-div {
-                text-align:left;
-                padding-left:5%;
-                margin: 60px 0;
-                padding-bottom: 30px;
-                border-bottom: 2px dotted white;
-            }
-            .word-title {
-                display:inline-block;
-                line-height:1em;
-            }
-            .def-list {
-                text-indent: 0;
-                margin: 20px 0;
-            }
-            .entry-list {
-                margin: auto;
-            }
-            .entry-div {
+            #tag-form {
+                margin: 50px 0 20px 0;
                 text-align: left;
-                padding-left: 5%;
-                min-height: 250px;
+                width: 80%;
+                display: none;
             }
-            .entry-comment {
-                margin: 20px 0;
-                padding-left: 50px;
+            #tag-input {
+                width: 70%;
+                font-size: 1.5em;
+                padding: 5px 8px;
+                border: 1px solid white;
+                border-radius: 5px;
+                outline: none;
+                color: #232323;
+                letter-spacing: 1px;
+                font-family: monospace;
+            }
+            #tag-button {
+                font-size: 1.5em;
+                padding: 5px;
+                background-color: #353535;
+                color: white;
+                box-shadow: none;
+                border: 2px solid white;
+                border-radius: 5px;
+                box-sizing: border-box;
+                outline: none;
+                transition: all ease-in-out 0.2s;
+            }
+            #tag-button:hover {
+                cursor: pointer;
+                background-color: #232323;
+            }
+            #tag-message {
+                font-size: 1.2em;
+                text-align: left;
+                margin: 0 10%;
+                color: #F44336;
+                letter-spacing: 3px;
+                font-weight: bold;
+                padding-left: 10px;
+            }
+            #bgcolor, #txcolor {
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+            }
+            #example-label {
+                display: inline-block;
+                border-radius: 5px;
+                padding: 5px 10px;
+                font-size: 1.5em;
+                margin: 10px 5px;
+            }
+            #tag-words {
+                margin: 50px;
+                text-align: left;
+            }
+            #tag-words a {
+                text-decoration: none;
+                color: white;
+                font-size: 1.5em;
+                display: block;
+                margin: 10px 0;
+            }
+            #tag-words-title {
+                font-weight: bold;
+                font-size: 2em;
+                color: white;
+                display: block;
+                padding-bottom: 20px;
+                border-bottom: 2px solid white;
+                margin-bottom: 20px;
             }
         </style>
     </head>
     <body>
-        <div id="root">
-            
-            <div id='search-bar'>
-                <form id='search-form' action="/search" method="GET">
-                    
-                    <input placeholder="Enter word to search..." type="text" name="word" id='search-input' />
-                    
-                    <input type="submit" id='search-button' value='Search' />
-                </form>
-            </div>
-            
-            <div id='content'>
-                
-                <div id="word-list">
-                    
-                        
-                        <div class='word-div'>
-                            <h1 class='word-title'>some</h1>&nbsp;
+        <div id='root'>
+            <div id='nav-bar'><a href='/'>Home</a>&nbsp;&nbsp;<a href='/tag'>Tags</a></div>
 
-                            
-                            
-                            <span>[ˈsəm]</span>&nbsp;
-                            
+            <div id='content'>    
+                <!-- Tags -->
+                <div id='tag-div'>
+                    <div id='tag-list'>
+                        <h2 id='tag-title'>Tags:</h2>
+                        {{range .Tags}}
+                        <div class='tag-elem' onClick="tagSelect(this)" id='tag-name-{{.Name}}' style="background-color: {{.BgColor}}; color: {{.TxColor}}">{{.Name}}&nbsp;-&nbsp;{{len .Words}}</div>
+                        {{end}}
+                    </div>
 
-                            
-                            <span><i>adjective</i></span>
-
-                            
-                            <p>
-                                <span style='font-weight:bold;'>Stemed Words:</span>
-                                
-                                <span>some</span>
-                                
-                            </p>
-
-                            
-                            <ol class='def-list'>
-                                
-                                <li>being an unknown, undetermined, or unspecified unit or thing </li>
-                                
-                                <li>being one, a part, or an unspecified number of something (such as a class or group) named or implied </li>
-                                
-                                <li>being of an unspecified amount or number </li>
-                                
-                                <li>remarkable, striking </li>
-                                
-                                <li>being at least one </li>
-                                
-                            </ol>
-                        </div>
-                        
-                        <div class='word-div'>
-                            <h1 class='word-title'>some</h1>&nbsp;
-
-                            
-                            
-                            <span>[ˈsəm]</span>&nbsp;
-                            
-
-                            
-                            <span><i>pronoun, singular or plural in construction</i></span>
-
-                            
-                            <p>
-                                <span style='font-weight:bold;'>Stemed Words:</span>
-                                
-                                <span>some</span>
-                                
-                            </p>
-
-                            
-                            <ol class='def-list'>
-                                
-                                <li>one indeterminate quantity, portion, or number as distinguished from the rest</li>
-                                
-                                <li>an indefinite additional amount </li>
-                                
-                            </ol>
-                        </div>
-                        
-                        <div class='word-div'>
-                            <h1 class='word-title'>some</h1>&nbsp;
-
-                            
-                            
-                            <span>[ˈsəm]</span>&nbsp;
-                            
-                            <span>[ˌsəm]</span>&nbsp;
-                            
-
-                            
-                            <span><i>adverb</i></span>
-
-                            
-                            <p>
-                                <span style='font-weight:bold;'>Stemed Words:</span>
-                                
-                                <span>some</span>
-                                
-                            </p>
-
-                            
-                            <ol class='def-list'>
-                                
-                                <li>about </li>
-                                
-                                <li>in some degree somewhat </li>
-                                
-                                <li>to some degree or extent a little </li>
-                                
-                            </ol>
-                        </div>
-                        
-                    
+                    <form method='GET' action='/tag' id='tag-form'>
+                        <input name='tag' type='hidden' id='tag-input'>
+                    </form>
                 </div>
 
-                
-                <div id='entry-list'>
-                    
-                    <div class='entry-div'>
-                        <p class='entry-date'><i>01/20/2019</i></p>
-                        <p class='entry-comment'>saw in NYTimes</p>
-                        <p>Have tag: </p>
-                    </div>
-                    
-                    <div class='entry-div'>
-                        <p class='entry-date'><i>02/01/2020</i></p>
-                        <p class='entry-comment'>i should have remembered it</p>
-                        <p>Have tag: Sherlock Holmes</p>
-                    </div>
-                    
-                    <div class='entry-div'>
-                        <p class='entry-date'><i>02/20/2020</i></p>
-                        <p class='entry-comment'>again</p>
-                        <p>Have tag: NYTimes</p>
-                    </div>
-                    
-
-                    
-                    <form action="/search" method="POST" id='comment-form'>
-                        <textarea placeholder="Optional comment goes here..." type="text" name="comment" id='comment-input'></textarea>
-                    </form>
+                <!-- Words -->
+                <div id='tag-words'>
+                    {{if .CurrTag ne ""}}
+                    <h2 id='tag-words-title'>{{.CurrTag}}</h2>
+                    {{range .Words}}
+                    <a href='/search?word={{.}}'>{{.}}</a><br>
+                    {{end}}
+                    {{end}}
                 </div>
             </div>
         </div>
+
+        <script type="text/javascript">
+            // Toggle selected tags
+            var tagNamePrefix = 'tag-name-';
+            var tagInput = document.getElementById('search-tag');
+            var tagForm = document.getElementById('tag-form');
+            var tags = document.getElementsByClassName('tag-elem');
+    
+            console.log("Process");
+    
+            function tagSelect(e) {
+                console.log("Call tagselect");
+                // Set input and get words
+                var id = e.id;
+                tagInput.value = id.substring(tagNamePrefix.length);
+                tagForm.submit();
+            }
+    
+            console.log("End");
+        </script>
     </body>
 </html>
