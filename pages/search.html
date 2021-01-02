@@ -183,7 +183,11 @@
                             <span id='spell-error-title'>Did you mean:</span>
                             <p>
                                 {{range .Definitions.GuessWords}}
-                                <a class='spell-error-guess' href='/search?word={{.}}'>{{.}}</a><br>
+                                {{if $.HaveTag}}
+                                <a class='spell-error-guess' href='/search?word={{.}}&tag={{$.Tag.Name}}'>{{.}}</a><br>
+                                {{else}}
+                                <a class='spell-error-guess' href='/search?word={{.}}&tag='>{{.}}</a><br>
+                                {{end}}
                                 {{end}}
                             </p>
                         </div>
