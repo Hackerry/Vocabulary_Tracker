@@ -202,7 +202,11 @@
                             {{end}}
 
                             <!-- Function -->
-                            <span><i>{{.Func}}</i></span>
+                            <span>
+                                {{range .Func}}
+                                <i>{{.}}</i>
+                                {{end}}
+                            </span>
 
                             <!-- Stemed Words -->
                             <p>

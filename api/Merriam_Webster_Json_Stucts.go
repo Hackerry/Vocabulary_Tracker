@@ -1,25 +1,25 @@
 package api
 
-type Entry struct {
-	Meta		Meta
-	Hwi			Hwi
+type MW_Entry struct {
+	Meta		MW_Meta
+	Hwi			MW_Hwi
 	Fl			string
-	Def			[]Def
+	Def			[]MW_Def
 }
 
-type Meta struct {
+type MW_Meta struct {
 	Id			string
 	Stems		[]string
 }
 
-type Hwi struct {
-	Prs			[]Pronun
+type MW_Hwi struct {
+	Prs			[]MW_Pronun
 }
 
-type Pronun struct {
+type MW_Pronun struct {
 	Mw			string
 }
 
-type Def struct {
+type MW_Def struct {
 	Sseq		interface{}
 }

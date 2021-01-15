@@ -16,7 +16,7 @@ type API struct {
 }
 
 func (api *API) Query(word string) []byte {
-	query := strings.ReplaceAll(api.Url, WordPlaceHolder, word)
+	query := strings.ReplaceAll(api.Url, WordPlaceHolder, url.QueryEscape(word))
 	log.Println("Query:", query)
 	resp, err := http.Get(query)
 	if err != nil {
@@ -63,6 +63,8 @@ func NewAPI(urlStr string, apiProvider string) *API {
 	switch apiProvider {
 		case "Merriam-Webster":
 			parser = ParseMWJson
+		case "Jisho":
+			parser = ParseJSJson
 		default:
 			log.Println("No parser found")
 			return nil
@@ -71,5 +73,5 @@ func NewAPI(urlStr string, apiProvider string) *API {
 	return &API {
 		Url:	u.String(),
 		Parser:	parser,
-	};
+	}
 }

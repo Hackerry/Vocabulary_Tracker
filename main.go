@@ -15,10 +15,23 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	}
-	p := strings.Split(string(data), " ")
-	a := api.NewAPI(p[0], p[1])
-	log.Println("API URL:", a.Url)
-	log.Println("Using parser:", p[1])
+	lines := strings.Split(string(data), "\n")
+
+	var a *api.API = nil
+	// Comment out unused API with #
+	for _, line := range lines {
+		if line[0] != '#' {
+			p := strings.Split(line, " ")
+			a = api.NewAPI(p[0], p[1])
+			log.Println("API URL:", a.Url)
+			log.Println("Using parser:", p[1])
+			break
+		}
+	}
+
+	if a == nil {
+		log.Fatal("Can't initialize api\n")
+	}
 
 	s := server.NewServer(a)
 	s.Serve()

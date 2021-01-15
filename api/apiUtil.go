@@ -11,7 +11,7 @@ import (
 type Definition struct {
 	Word		string		// Word
 	Pronun		[]string	// Pronunciation
-	Func		string		// Function
+	Func		[]string	// Function
 	Stems		[]string	// Stemed words
 	Defs		[]string	// Definitions and uses
 }
@@ -26,7 +26,7 @@ type Parser func([]byte) *Definitions
 
 // Parse Merriam-Webster api result
 func ParseMWJson(data []byte) *Definitions {
-	var entries []Entry
+	var entries []MW_Entry
 
 	// Parse json
 	err := json.Unmarshal([]byte(data), &entries)
@@ -66,12 +66,70 @@ func ParseMWJson(data []byte) *Definitions {
 		def := Definition {
 			Word: sanitizeId(entry.Meta.Id),
 			Pronun: pronun,
-			Func: entry.Fl,
+			Func: []string{entry.Fl},
 			Stems: entry.Meta.Stems,
 			Defs: definitions,
 		}
 
 		// Add definition to list
+		defs = append(defs, def)
+	}
+
+	return &Definitions {
+		SpellError: false,
+		DefList: defs,
+	}
+}
+
+// Parse Jisho.org api result
+func ParseJSJson(data []byte) *Definitions {
+	var entry JS_Entry
+
+	// Parse json
+	err := json.Unmarshal([]byte(data), &entry)
+	if err != nil {
+		log.Println("Error unmarshalling data", err);
+		return nil
+	}
+
+	// Check return code
+	if entry.Meta.Status != 200 {
+		log.Println("API returned none 200 code:", entry.Meta.Status)
+		log.Println(string(data))
+		return nil
+	}
+
+	// Get all entries and definition
+	defs := make([]Definition, 0, 0)
+	for _, slug := range entry.Data {
+		functions := make([]string, 0, 0)
+		definitions := make([]string, 0, 0)
+		japanesePro := make([]string, 0, 0)
+		for _, sense := range slug.Senses {
+			Outer: for _, use := range sense.Uses {
+				for _, f := range functions {
+					if f == use {
+						continue Outer
+					}
+				}
+
+				// Add not repeated use
+				functions = append(functions, sense.Uses...)
+			}
+			definitions = append(definitions, sense.Def...)
+		}
+		for _, pronoun := range slug.JpWord {
+			japanesePro = append(japanesePro, pronoun.Word + "(" + pronoun.Reading + ")")
+		}
+
+		def := Definition {
+			Word: slug.Slug,
+			Pronun: japanesePro,
+			Func: functions,
+			Stems: []string{},
+			Defs: definitions,
+		}
+		
 		defs = append(defs, def)
 	}
 
